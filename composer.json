@@ -1,0 +1,26 @@
+{
+	"name": "xpress-framework/xpress-mvc",
+	"type": "wordpress-plugin",
+	"license": "GPLv2",
+	"description": "Implements a MVC-like platform in a WordPress site.",
+	"homepage": "https://github.com/xpress-framework/xpress-mvc/",
+	"authors": [
+		{
+			"name": "Juan Manuel Arias",
+			"email": "trasgofurioso@gmail.com"
+		},
+    {
+      "name": "Thiago Benvenuto",
+      "email": "brazabr@gmail.com"
+    }
+	],
+	"keywords": [
+		"wordpress", "xpress", "mvc", "controller", "view", "rest", "api"
+	],
+	"support": {
+		"issues": "https://github.com/xpress-framework/xpress-mvc/issues"
+	},
+	"require": {
+	},
+	"minimum-stability": "dev"
+}
