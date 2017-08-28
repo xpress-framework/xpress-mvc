@@ -135,7 +135,7 @@ class Xpress_MVC_Controller {
 	 * @return Xpress_MVC_Response
 	 */
 	public function redirect( $location, $permanent = false ) {
-		$response = xpress_mvc_ensure_response( $data );
+		$response = xpress_mvc_ensure_response( null );
 
 		$response->header( 'Location', $location, true );
 		$response->status = $permanent ? 301 : 302;
