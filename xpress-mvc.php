@@ -110,27 +110,3 @@ function xpress_mvc_ensure_response( $response ) {
 function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
 	return xpress_mvc_get_server()->get_route_permalink( $route_id, $arguments );
 }
-
-class TestController extends XPress_MVC_Controller {
-	function register_routes() {
-		$this->register_route( 'single-test', '/test/(?P<id>\d+)', array(
-			'methods' => 'GET',
-			'callback' => array( $this, 'single_test' ),
-			'args' => array(
-				'x' => array(
-					'validate_callback' => function($param, $request, $key) {
-						return ! is_numeric( $param );
-					}
-				),
-			),
-		) );
-	}
-
-	function single_test( WP_REST_Request $request ) {
- 		if ( $request->get_param( 'id' ) == 404 )
- 			return $this->not_found();
-
-		return $request->get_params();
-	}
-}
-new TestController();
