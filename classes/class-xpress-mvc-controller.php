@@ -1,8 +1,8 @@
 <?php
 /**
- * Xpress MVC Controller Class
+ * XPress MVC Controller Class
  *
- * @package    Xpress
+ * @package    XPress
  * @subpackage MVC
  * @author     Thiago Benvenuto
  * @license    GPLv2
@@ -10,10 +10,10 @@
  */
 
 /**
- * Base class for a Xpress MVC controller.
+ * Base class for a XPress MVC controller.
  * If used as it is, it does nothing. Should be extended to a new class that implements the real controller logic.
  */
-class Xpress_MVC_Controller {
+class XPress_MVC_Controller {
 
 	/**
 	 * Constructor.
@@ -29,7 +29,7 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Registers a Xpress MVC route.
+	 * Registers a XPress MVC route.
 	 *
 	 * @since 0.1.0
 	 *
@@ -86,14 +86,14 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Returns a 200 OK Xpress_MVC_Response
+	 * Returns a 200 OK XPress_MVC_Response
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param mixed  $data     The data to be returned as the view model.
 	 * @param string $template The template filename (no folder, no extension) to render.
 	 *
-	 * @return Xpress_MVC_Response
+	 * @return XPress_MVC_Response
 	 */
 	public function ok( $data = null, $template = null ) {
 		$response = xpress_mvc_ensure_response( $data );
@@ -104,7 +104,7 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Returns a 201 Created Xpress_MVC_Response
+	 * Returns a 201 Created XPress_MVC_Response
 	 *
 	 * @since 0.1.0
 	 *
@@ -112,7 +112,7 @@ class Xpress_MVC_Controller {
 	 * @param mixed  $data     The data to be returned as the view model.
 	 * @param string $template The template filename (no folder, no extension) to render.
 	 *
-	 * @return Xpress_MVC_Response
+	 * @return XPress_MVC_Response
 	 */
 	public function created( $location, $data = null, $template = null ) {
 		$response = xpress_mvc_ensure_response( $data );
@@ -125,14 +125,14 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Returns a 301/302 Redirect Xpress_MVC_Response
+	 * Returns a 301/302 Redirect XPress_MVC_Response
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param string $location  The value to be send in the Location header.
 	 * @param bool   $permanent Whether the response should be a permanent (301) or temporary (302) redirect.
 	 *
-	 * @return Xpress_MVC_Response
+	 * @return XPress_MVC_Response
 	 */
 	public function redirect( $location, $permanent = false ) {
 		$response = xpress_mvc_ensure_response( null );
@@ -144,14 +144,14 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Returns a 404 Not Found Xpress_MVC_Response
+	 * Returns a 404 Not Found XPress_MVC_Response
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param mixed  $data     The data to be returned as the view model.
 	 * @param string $template The template filename (no folder, no extension) to render.
 	 *
-	 * @return Xpress_MVC_Response
+	 * @return XPress_MVC_Response
 	 */
 	public function not_found( $data = null, $template = null ) {
 		$response = xpress_mvc_ensure_response( $data );
@@ -163,14 +163,14 @@ class Xpress_MVC_Controller {
 	}
 
 	/**
-	 * Returns a 500 Error Xpress_MVC_Response
+	 * Returns a 500 Error XPress_MVC_Response
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param mixed  $data     The data to be returned as the view model.
 	 * @param string $template The template filename (no folder, no extension) to render.
 	 *
-	 * @return Xpress_MVC_Response
+	 * @return XPress_MVC_Response
 	 */
 	public function error( $data = null, $template = null ) {
 		$response = xpress_mvc_ensure_response( $data );
@@ -183,4 +183,4 @@ class Xpress_MVC_Controller {
 		return $response;
 	}
 
-} // Xpress_MVC_Controller
+} // XPress_MVC_Controller

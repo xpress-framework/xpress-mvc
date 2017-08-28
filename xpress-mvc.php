@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: Xpress MVC
+ * Plugin Name: XPress MVC
  * Version: 0.1.0
  * Plugin URI: https://github.com/xpress-framework/xpress-mvc
  * Description: Implements a MVC-like platform in a WordPress site.
- * Author: Xpress Framework
+ * Author: XPress Framework
  * Author URI: https://github.com/xpress-framework
  * Requires at least: 4.8
  * Tested up to: 4.8.1
@@ -14,7 +14,7 @@
  * Text Domain: xpress-mvc
  * Domain Path: /lang/
  *
- * @package    Xpress
+ * @package    XPress
  * @subpackage MVC
  */
 
@@ -28,7 +28,7 @@ require_once 'classes/class-xpress-mvc-controller.php';
 add_action( 'parse_request', 'xpress_mvc_loaded' );
 
 /**
- * Loads the Xpress MVC.
+ * Loads the XPress MVC.
  *
  * @since 0.1.0
  */
@@ -41,22 +41,22 @@ function xpress_mvc_loaded() {
 }
 
 /**
- * Retrieves the current Xpress MVC server instance.
+ * Retrieves the current XPress MVC server instance.
  *
  * Instantiates a new instance if none exists already.
  *
  * @since 0.1.0
  *
- * @global Xpress_MVC_Server $xpress_mvc_server Xpress MVC server instance.
+ * @global XPress_MVC_Server $xpress_mvc_server XPress MVC server instance.
  *
- * @return Xpress_MVC_Server Xpress MVC server instance.
+ * @return XPress_MVC_Server XPress MVC server instance.
  */
 function xpress_mvc_get_server() {
 	/* @var WP_REST_Server $wp_rest_server */
 	global $xpress_mvc_server;
 
 	if ( empty( $xpress_mvc_server ) ) {
-		$xpress_mvc_server = new Xpress_MVC_Server;
+		$xpress_mvc_server = new XPress_MVC_Server;
 
 		/**
 		 * Fires when preparing to serve an API request.
@@ -66,7 +66,7 @@ function xpress_mvc_get_server() {
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param Xpress_MVC_Server $wp_rest_server Server object.
+		 * @param XPress_MVC_Server $wp_rest_server Server object.
 		 */
 		do_action( 'xpress_mvc_init', $xpress_mvc_server );
 	}
@@ -84,9 +84,9 @@ function xpress_mvc_get_server() {
  * @since 0.1.0
  *
  * @param WP_Error|WP_HTTP_Response|mixed $response Response to check.
- * @return Xpress_MVC_Response|mixed If response generated an error, WP_Error, if response
+ * @return XPress_MVC_Response|mixed If response generated an error, WP_Error, if response
  *                                is already an instance, WP_HTTP_Response, otherwise
- *                                returns a new Xpress_MVC_Response instance.
+ *                                returns a new XPress_MVC_Response instance.
  */
 function xpress_mvc_ensure_response( $response ) {
 	if ( is_wp_error( $response ) ) {
@@ -95,7 +95,7 @@ function xpress_mvc_ensure_response( $response ) {
 	if ( $response instanceof WP_HTTP_Response ) {
 		return $response;
 	}
-	return new Xpress_MVC_Response( $response );
+	return new XPress_MVC_Response( $response );
 }
 
 /**
@@ -111,7 +111,7 @@ function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
 	return xpress_mvc_get_server()->get_route_permalink( $route_id, $arguments );
 }
 
-class TestController extends Xpress_MVC_Controller {
+class TestController extends XPress_MVC_Controller {
 	function register_routes() {
 		$this->register_route( 'single-test', '/test/(?P<id>\d+)', array(
 			'methods' => 'GET',
