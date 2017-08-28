@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="Xpress">
-  <description>Xpress Coding Standards</description>
+<ruleset name="XPress">
+  <description>XPress Coding Standards</description>
 
   <!-- Show colors in console -->
   <arg value="-colors"/>

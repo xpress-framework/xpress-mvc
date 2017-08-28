@@ -1,8 +1,8 @@
 <?php
 /**
- * Xpress_MVC_Server class
+ * XPress_MVC_Server class
  *
- * @package    Xpress
+ * @package    XPress
  * @subpackage MVC
  * @author     Thiago Benvenuto
  * @license    GPLv2
@@ -10,11 +10,11 @@
  */
 
 /**
- * Core class used to implement the Xpress MVC server. Inspired by WP REST API Server class.
+ * Core class used to implement the XPress MVC server. Inspired by WP REST API Server class.
  *
  * @since 0.1.0
  */
-class Xpress_MVC_Server {
+class XPress_MVC_Server {
 
 	/**
 	 * Alias for GET transport method.
@@ -74,7 +74,7 @@ class Xpress_MVC_Server {
 
 
 	/**
-	 * Instantiates the Xpress server.
+	 * Instantiates the XPress server.
 	 *
 	 * @since 0.1.0
 	 */
@@ -103,7 +103,7 @@ class Xpress_MVC_Server {
 			$status = 500;
 		}
 
-		$response = new Xpress_MVC_Response( $error, $status );
+		$response = new XPress_MVC_Response( $error, $status );
 
 		return $response;
 	}
@@ -147,7 +147,7 @@ class Xpress_MVC_Server {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @see Xpress_MVC_Server::dispatch()
+	 * @see XPress_MVC_Server::dispatch()
 	 *
 	 * @param string $path Optional. The request route. If not set, the route will be guessed from $_SERVER.
 	 *                     Default null.
@@ -183,7 +183,7 @@ class Xpress_MVC_Server {
 		$result = $this->dispatch( $request );
 
 		// No route found that matches the $path. Return control to WordPress.
-		if ( $result instanceof Xpress_MVC_No_Route ) {
+		if ( $result instanceof XPress_MVC_No_Route ) {
 			return;
 		}
 
@@ -191,14 +191,14 @@ class Xpress_MVC_Server {
 		$result = xpress_mvc_ensure_response( $result );
 
 		/**
-		 * Filters the Xpress MVC response.
+		 * Filters the XPress MVC response.
 		 *
 		 * Allows modification of the response before returning.
 		 *
 		 * @since 0.1.0
 		 *
 		 * @param XPress_MVC_Response  $result  Result to send to the client. Usually a XPress_MVC_Response.
-		 * @param Xpress_MVC_Server $this    Server instance.
+		 * @param XPress_MVC_Server $this    Server instance.
 		 * @param WP_REST_Request   $request Request used to generate the response.
 		 */
 		$result = xpress_mvc_ensure_response( apply_filters( 'xpress_mvc_post_dispatch', $result, $this, $request ) );
@@ -270,7 +270,7 @@ class Xpress_MVC_Server {
 		// Show a notice to the developer if the templates are missing.
 		if ( empty( $template ) ) {
 			$template_list = '[ ' . join( ', ', $templates ) . ' ]';
-			_doing_it_wrong( 'Xpress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
+			_doing_it_wrong( 'XPress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
 			return false;
 		}
 
@@ -420,7 +420,7 @@ class Xpress_MVC_Server {
 		 *
 		 * @param mixed             $result  Response to replace the requested version with. Can be anything
 		 *                                   a normal endpoint can return, or null to not hijack the request.
-		 * @param Xpress_MVC_Server $this    Server instance.
+		 * @param XPress_MVC_Server $this    Server instance.
 		 * @param WP_REST_Request   $request Request used to generate the response.
 		 */
 		$result = apply_filters( 'xpress_mvc_pre_dispatch', null, $this, $request );
@@ -506,7 +506,7 @@ class Xpress_MVC_Server {
 				 * @since 0.1.0
 				 *
 				 * @param XPress_MVC_Response  $response Result to send to the client. Usually a XPress_MVC_Response.
-				 * @param Xpress_MVC_Server $handler  ResponseHandler instance.
+				 * @param XPress_MVC_Server $handler  ResponseHandler instance.
 				 * @param WP_REST_Request   $request  Request used to generate the response.
 				 */
 				$response = apply_filters( 'xpress_mvc_request_before_callbacks', $response, $handler, $request );
@@ -566,7 +566,7 @@ class Xpress_MVC_Server {
 				 * @since 0.1.0
 				 *
 				 * @param XPress_MVC_Response  $response Result to send to the client. Usually a XPress_MVC_Response.
-				 * @param Xpress_MVC_Server $handler  ResponseHandler instance.
+				 * @param XPress_MVC_Server $handler  ResponseHandler instance.
 				 * @param WP_REST_Request   $request  Request used to generate the response.
 				 */
 				$response = apply_filters( 'xpress_mvc_request_after_callbacks', $response, $handler, $request );
@@ -584,7 +584,7 @@ class Xpress_MVC_Server {
 			} // End foreach().
 		} // End foreach().
 
-		return new Xpress_MVC_No_Route;
+		return new XPress_MVC_No_Route;
 	}
 
 	/**

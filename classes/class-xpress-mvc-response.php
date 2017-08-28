@@ -1,8 +1,8 @@
 <?php
 /**
- * Xpress MVC Response Class
+ * XPress MVC Response Class
  *
- * @package    Xpress
+ * @package    XPress
  * @subpackage MVC
  * @author     Thiago Benvenuto
  * @license    GPLv2
@@ -12,7 +12,7 @@
 /**
  * Defines a response.
  */
-class Xpress_MVC_Response extends WP_REST_Response {
+class XPress_MVC_Response extends WP_REST_Response {
 
 	/**
 	 * The template to be rendered.

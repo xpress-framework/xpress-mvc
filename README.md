@@ -1,4 +1,4 @@
-# Xpress MVC for WordPress
+# XPress MVC for WordPress
 
 If you ever wanted to code in a MVC pattern inside WordPress, now you can!
 

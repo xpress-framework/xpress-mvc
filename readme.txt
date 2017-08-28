@@ -1,5 +1,5 @@
-=== Xpress MVC ===
-Contributors: brazabr
+=== XPress MVC ===
+Contributors: brazabr, trasgofurioso
 Donate Link:
 Plugin URI: https://github.com/xpress-framework/xpress-mvc
 Author URI: https://github.com/xpress-framework

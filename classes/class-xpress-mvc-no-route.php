@@ -1,8 +1,8 @@
 <?php
 /**
- * Xpress MVC: Xpress_MVC_Server class
+ * XPress MVC: XPress_MVC_Server class
  *
- * @package    Xpress
+ * @package    XPress
  * @subpackage MVC
  * @author     Thiago Benvenuto
  * @license    GPLv2
@@ -12,4 +12,4 @@
 /**
  * Class used to inform that no routes where found to server the request.
  */
-class Xpress_MVC_No_Route {}
+class XPress_MVC_No_Route {}
