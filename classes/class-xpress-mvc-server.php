@@ -267,7 +267,7 @@ class Xpress_MVC_Server {
 		// Let WordPress system find the best suitable template for us.
 		$template = get_query_template( $template_name, $templates );
 
-		// Show a notice to the developer is the templates are missing.
+		// Show a notice to the developer if the templates are missing.
 		if ( empty( $template ) ) {
 			$template_list = '[ ' . join( ', ', $templates ) . ' ]';
 			_doing_it_wrong( 'Xpress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
