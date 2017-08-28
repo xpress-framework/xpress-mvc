@@ -4,8 +4,8 @@
  * Version: 0.1.0
  * Plugin URI: https://github.com/xpress-framework/xpress-mvc
  * Description: Implements a MVC-like platform in a WordPress site.
- * Author: Thiago Benvenuto
- * Author URI: https://profiles.wordpress.org/brazabr
+ * Author: Xpress Framework
+ * Author URI: https://github.com/xpress-framework
  * Requires at least: 4.8
  * Tested up to: 4.8.1
  * License: GPLv2
