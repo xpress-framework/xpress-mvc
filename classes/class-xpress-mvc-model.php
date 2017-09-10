@@ -68,7 +68,7 @@ class XPress_MVC_Model {
 	}
 
 	/**
-	 * Set attribute value.
+	 * Sets attribute value.
 	 *
 	 * @param string $attribute Attribute slug.
 	 *
@@ -87,7 +87,7 @@ class XPress_MVC_Model {
 	}
 
 	/**
-	 * Get attribute value.
+	 * Gets attribute value.
 	 *
 	 * @param string $attribute Attribute slug.
 	 *
@@ -101,5 +101,30 @@ class XPress_MVC_Model {
 		} else {
 			throw new XPressInvalidModelAttributeException( $attribute );
 		}
+	}
+
+	/**
+	 * Updates attributes value.
+	 *
+	 * @param array $attributes Attributes to update.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return boolean
+	 */
+	public function update( $attributes ) {
+		$invalid_attributes = array();
+		foreach ( $attributes as $attribute ) {
+			if ( ! $this->__isset( $attribute ) ) {
+				$invalid_attributes[] = $attribute;
+			}
+		}
+		if ( empty( $invalid_attributes ) ) {
+			$this->attributes = $attributes;
+			return true;
+		} else {
+			throw new XPressInvalidModelAttributeException( join( ', ', $invalid_attributes ) );
+		}
+
 	}
 } // XPress_MVC_Model

@@ -75,5 +75,41 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->expectException( XPressInvalidModelAttributeException::class );
 		$model->last_name;
 	}
+
+	/**
+	 * Updates attributes and return true.
+	 */
+	function test_update_attributes() {
+		XPress_MVC_Model::set_attributes( array(
+			'first_name',
+		) );
+		$model = XPress_MVC_Model::new();
+		$model->first_name = 'John';
+		$new_values = array(
+			'first_name' => 'Mary',
+		);
+		$this->assertTrue( $model->update( $new_values ) );
+		$this->assertEquals( 'Mary', $model->first_name );
+	}
+
+	/**
+	 * Fail to update all attributes if any attribute is invalid.
+	 */
+	function test_fail_update_attributes() {
+		XPress_MVC_Model::set_attributes( array(
+			'first_name',
+		) );
+		$model = XPress_MVC_Model::new();
+		$model->first_name = 'John';
+		$new_values = array(
+			'first_name' => 'Mary',
+			'last_name' => 'Doe',
+		);
+		try {
+			$model->update( $new_values );
+		} catch ( XPressInvalidModelAttributeException $e ) {
+			$this->assertEquals( 'John', $model->first_name );
+		}
+	}
 }
 
