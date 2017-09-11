@@ -10,20 +10,24 @@
  */
 class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	/**
-	 * Create an instance.
+	 * Creates XPress_MVC_Model subclass with schema.
 	 */
-	function test_new_instance() {
-		$this->assertInstanceOf( XPress_MVC_Model::class, XPress_MVC_Model::new() );
+	public function setUp() {
+		include 'fixtures/class-sample-xpress-model.php';
 	}
 
 	/**
-	 * Set valid attributes.
+	 * Create an instance.
+	 */
+	function test_new_instance() {
+		$this->assertInstanceOf( Sample_XPress_Model::class, Sample_XPress_Model::new() );
+	}
+
+	/**
+	 * Set valid attributes from schema.
 	 */
 	function test_set_attributes() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$this->assertTrue( isset( $model->first_name ) );
 		$this->assertFalse( isset( $model->last_name ) );
 	}
@@ -32,11 +36,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Set attribute value only for valid attributes.
 	 */
 	function test_set_attribute_value() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
-		$model->first_name = 'John';
+		$model = Sample_XPress_Model::new();
 		$this->expectException( XPressInvalidModelAttributeException::class );
 		$model->last_name = 'John';
 	}
@@ -45,11 +45,18 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Get previously set valid attribute.
 	 */
 	function test_get_attribute_value() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$model->first_name = 'John';
+		$this->assertEquals( 'John', $model->first_name );
+	}
+
+	/**
+	 * Set values at instance creation.
+	 */
+	function test_set_attribute_value_at_new() {
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+		) );
 		$this->assertEquals( 'John', $model->first_name );
 	}
 
@@ -57,10 +64,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Empty valid attribute returns null.
 	 */
 	function test_get_empty_attribute_value() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$this->assertNull( $model->first_name );
 	}
 
@@ -68,10 +72,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Invalid attribute call throws exception.
 	 */
 	function test_get_invalid_attribute_value() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$this->expectException( XPressInvalidModelAttributeException::class );
 		$model->last_name;
 	}
@@ -80,10 +81,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Updates attributes and return true.
 	 */
 	function test_update_attributes() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$model->first_name = 'John';
 		$new_values = array(
 			'first_name' => 'Mary',
@@ -96,10 +94,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Fail to update all attributes if any attribute is invalid.
 	 */
 	function test_fail_update_attributes() {
-		XPress_MVC_Model::set_attributes( array(
-			'first_name',
-		) );
-		$model = XPress_MVC_Model::new();
+		$model = Sample_XPress_Model::new();
 		$model->first_name = 'John';
 		$new_values = array(
 			'first_name' => 'Mary',

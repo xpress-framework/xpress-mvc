@@ -15,12 +15,12 @@
  */
 class XPress_MVC_Model {
 	/**
-	 * Model valid attributes.
+	 * Model schema. MUST define in subclass.
 	 *
 	 * @since 0.2.0
 	 * @var array
 	 */
-	static protected $valid_attributes;
+	static protected $schema;
 
 	/**
 	 * Model attributes.
@@ -31,27 +31,27 @@ class XPress_MVC_Model {
 	protected $attributes;
 
 	/**
+	 * Class constructor. Reads schema and sets attributes.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return XPress_MVC_Model instance.
+	 */
+	public function __construct( $attributes = array() ) {
+		if ( ! empty( $attributes ) ) {
+			$this->update( $attributes );
+		}
+	}
+
+	/**
 	 * Returns an empty model instance.
 	 *
 	 * @since 0.2.0
 	 *
 	 * @return XPress_MVC_Model instance.
 	 */
-	static function new() {
-		return new XPress_MVC_Model;
-	}
-
-	/**
-	 * Declares valid attributes.
-	 *
-	 * @param array $attrs List of valid attributes.
-	 *
-	 * @since 0.2.0
-	 *
-	 * @return null
-	 */
-	static function set_attributes( $attrs ) {
-		static::$valid_attributes = $attrs;
+	static function new( $attributes = array() ) {
+		return new static( $attributes );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class XPress_MVC_Model {
 	 * @return boolean
 	 */
 	public function __isset( $attribute ) {
-		return in_array( $attribute, static::$valid_attributes );
+		return array_key_exists( $attribute, static::$schema['properties'] );
 	}
 
 	/**
