@@ -23,6 +23,7 @@ require_once 'classes/class-xpress-mvc-no-route.php';
 require_once 'classes/class-xpress-mvc-response.php';
 require_once 'classes/class-xpress-mvc-server.php';
 require_once 'classes/class-xpress-mvc-controller.php';
+require_once 'classes/interface-xpress-model-crud.php';
 require_once 'classes/class-xpress-mvc-model.php';
 require_once 'classes/exception-xpress-invalid-model-attribute.php';
 

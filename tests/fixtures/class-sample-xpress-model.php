@@ -22,5 +22,13 @@ if ( ! class_exists( 'Sample_XPress_Model' ) ) {
 				),
 			),
 		);
+
+		static function get( $id ) {}
+
+		static function find( $params ) {}
+
+		public function save() {}
+
+		public function delete() {}
 	}
 }
