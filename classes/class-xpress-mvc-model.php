@@ -114,7 +114,7 @@ class XPress_MVC_Model {
 	 */
 	public function update( $attributes ) {
 		$invalid_attributes = array();
-		foreach ( $attributes as $attribute ) {
+		foreach ( $attributes as $attribute => $value ) {
 			if ( ! $this->__isset( $attribute ) ) {
 				$invalid_attributes[] = $attribute;
 			}
