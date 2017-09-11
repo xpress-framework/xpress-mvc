@@ -44,7 +44,7 @@ class XPress_MVC_Model {
 	}
 
 	/**
-	 * Returns an empty model instance.
+	 * Returns a new model instance.
 	 *
 	 * @since 0.2.0
 	 *
@@ -126,5 +126,16 @@ class XPress_MVC_Model {
 			throw new XPressInvalidModelAttributeException( join( ', ', $invalid_attributes ) );
 		}
 
+	}
+
+	/**
+	 * Returns the model schema
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return array Model schema
+	 */
+	static function get_schema() {
+		return static::$schema;
 	}
 } // XPress_MVC_Model

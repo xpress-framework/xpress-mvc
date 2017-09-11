@@ -106,5 +106,17 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 			$this->assertEquals( 'John', $model->first_name );
 		}
 	}
+
+	/**
+	 * Returns model schema
+	 */
+	function test_return_schema() {
+		$schema = Sample_XPress_Model::get_schema();
+		$this->assertInternalType( 'array', $schema );
+		$this->assertArrayHasKey( '$schema', $schema );
+		$this->assertArrayHasKey( 'title', $schema );
+		$this->assertArrayHasKey( 'type', $schema );
+		$this->assertArrayHasKey( 'properties', $schema );
+	}
 }
 
