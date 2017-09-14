@@ -80,7 +80,7 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 * @return boolean
 	 */
 	public function __isset( $attribute ) {
-		return array_key_exists( $attribute, static::$schema['properties'] );
+		return array_key_exists( $attribute, static::$schema );
 	}
 
 	/**
@@ -151,7 +151,13 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 * @return array Model schema
 	 */
 	static function get_schema() {
-		return static::$schema;
+		$schema = array(
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => str_replace( '_', '-', sanitize_title_with_dashes( static::class ) ),
+			'type'       => 'object',
+			'properties' => static::$schema,
+		);
+		return $schema;
 	}
 
 	/**

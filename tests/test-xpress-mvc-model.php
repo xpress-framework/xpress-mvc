@@ -117,6 +117,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'title', $schema );
 		$this->assertArrayHasKey( 'type', $schema );
 		$this->assertArrayHasKey( 'properties', $schema );
+		$this->assertEquals( 'sample-xpress-model', $schema['title'] );
 	}
 
 	/**

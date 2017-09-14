@@ -11,30 +11,58 @@
 
 if ( ! class_exists( 'Sample_XPress_Model' ) ) {
 	class Sample_XPress_Model extends XPress_MVC_Model {
-		#TODO REmove header, leave just properties.
+		/**
+		 * Model schema.
+		 *
+		 * @since 0.2.0
+		 * @var array
+		 */
 		static protected $schema = array(
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'sample-xpress-model',
-			'type'       => 'object',
-			'properties' => array(
-				'first_name' => array(
-					'description' => 'First Name',
-					'type'        => 'string',
-					'required'    => true,
-				),
-				'age' => array(
-					'description' => 'Age',
-					'type'        => 'number',
-				),
+			'first_name' => array(
+				'description' => 'First Name',
+				'type'        => 'string',
+				'required'    => true,
+			),
+			'age' => array(
+				'description' => 'Age',
+				'type'        => 'number',
 			),
 		);
 
+		/**
+		 * Return a model instance for a specific item.
+		 *
+		 * @since 0.2.0
+		 *
+		 * @return XPress_MVC_Model instance.
+		 */
 		static function get( $id ) {}
 
+		/**
+		 * Return a model instance collection filtered by the params.
+		 *
+		 * @since 0.2.0
+		 *
+		 * @return array XPress_MVC_Model instance collection.
+		 */
 		static function find( $params ) {}
 
+		/**
+		 * Persists the current model instance.
+		 *
+		 * @since 0.2.0
+		 *
+		 * @return XPress_MVC_Model instance.
+		 */
 		public function save() {}
 
+		/**
+		 * Deleted the current model instance.
+		 *
+		 * @since 0.2.0
+		 *
+		 * @return XPress_MVC_Model instance.
+		 */
 		public function delete() {}
 	}
 }
