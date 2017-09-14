@@ -13,7 +13,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	 * Creates XPress_MVC_Model subclass with schema.
 	 */
 	public function setUp() {
-		include 'fixtures/class-sample-xpress-model.php';
+		require_once 'fixtures/class-sample-xpress-model.php';
 	}
 
 	/**
