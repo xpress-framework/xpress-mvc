@@ -9,10 +9,6 @@
  * @since      0.2.0
  */
 
-/**
- * Base class for a XPress MVC model.
- * If used as it is, it does nothing. Should be extended to a new class that implements the real model logic.
- */
 abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	/**
 	 * Model schema. MUST define in subclass.

@@ -1,13 +1,14 @@
 <?php
 /**
- * Class XPress_MVC_Model
+ * XPress MVC Model Test
  *
- * @package
+ * @package    XPress
+ * @subpackage MVC
+ * @author     Trasgo Furioso
+ * @license    GPLv2
+ * @since      0.2.0
  */
 
-/**
- * Model test case.
- */
 class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	/**
 	 * Creates XPress_MVC_Model subclass with schema.
@@ -24,7 +25,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Set valid attributes from schema.
+	 * Get valid attributes from schema.
 	 */
 	function test_set_attributes() {
 		$model = Sample_XPress_Model::new();
