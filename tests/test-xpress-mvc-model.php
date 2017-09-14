@@ -29,7 +29,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	function test_set_attributes() {
 		$model = Sample_XPress_Model::new();
 		$this->assertTrue( isset( $model->first_name ) );
-		$this->assertFalse( isset( $model->last_name ) );
+		$this->assertFalse( isset( $model->invalid_param ) );
 	}
 
 	/**
@@ -38,7 +38,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	function test_set_attribute_value() {
 		$model = Sample_XPress_Model::new();
 		$this->expectException( XPressInvalidModelAttributeException::class );
-		$model->last_name = 'John';
+		$model->invalid_param = 'John';
 	}
 
 	/**
@@ -74,7 +74,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 	function test_get_invalid_attribute_value() {
 		$model = Sample_XPress_Model::new();
 		$this->expectException( XPressInvalidModelAttributeException::class );
-		$model->last_name;
+		$model->invalid_param;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$model->first_name = 'John';
 		$new_values = array(
 			'first_name' => 'Mary',
-			'last_name' => 'Doe',
+			'invalid_param' => 'Doe',
 		);
 		try {
 			$model->update( $new_values );
@@ -117,6 +117,69 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'title', $schema );
 		$this->assertArrayHasKey( 'type', $schema );
 		$this->assertArrayHasKey( 'properties', $schema );
+	}
+
+	/**
+	 * Validates model against schema using standard WordPress validation
+	 */
+	function test_validate() {
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 35,
+		) );
+		$this->assertTrue( $model->is_valid() );
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 1,
+			'age'        => 35,
+		) );
+		$this->assertFalse( $model->is_valid() );
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => null,
+			'age'        => 35,
+		) );
+		$this->assertFalse( $model->is_valid() );
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => array( '35' ),
+		) );
+		$this->assertFalse( $model->is_valid() );
+		$model = Sample_XPress_Model::new();
+		$this->assertFalse( $model->is_valid() );
+	}
+
+	/**
+	 * Populates errors if model is invalid
+	 */
+	function test_model_errors() {
+		// Validation errors
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 1,
+			'age'        => array( '35' ),
+		) );
+		$model->is_valid();
+		$this->assertCount( 2, $model->get_errors() );
+		$this->assertNotEmpty( $model->get_errors()['first_name'] );
+		$this->assertNotEmpty( $model->get_errors()['age'] );
+		$this->assertEquals( 'First Name is not of type string.', $model->get_errors()['first_name'] );
+		$this->assertEquals( 'Age is not of type number.', $model->get_errors()['age'] );
+
+		// Required fields
+		$model = Sample_XPress_Model::new();
+		$model->is_valid();
+		$this->assertNotEmpty( $model->get_errors()['first_name'] );
+		$this->assertEquals( 'First Name is required.', $model->get_errors()['first_name'] );
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => '',
+		) );
+		$model->is_valid();
+		$this->assertNotEmpty( $model->get_errors()['first_name'] );
+		$this->assertEquals( 'First Name is required.', $model->get_errors()['first_name'] );
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => null,
+		) );
+		$model->is_valid();
+		$this->assertNotEmpty( $model->get_errors()['first_name'] );
+		$this->assertEquals( 'First Name is required.', $model->get_errors()['first_name'] );
 	}
 }
 

@@ -11,14 +11,20 @@
 
 if ( ! class_exists( 'Sample_XPress_Model' ) ) {
 	class Sample_XPress_Model extends XPress_MVC_Model {
+		#TODO REmove header, leave just properties.
 		static protected $schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => 'sample-xpress-model',
 			'type'       => 'object',
 			'properties' => array(
 				'first_name' => array(
-					'description' => 'Unique identifier for the object.',
+					'description' => 'First Name',
 					'type'        => 'string',
+					'required'    => true,
+				),
+				'age' => array(
+					'description' => 'Age',
+					'type'        => 'number',
 				),
 			),
 		);

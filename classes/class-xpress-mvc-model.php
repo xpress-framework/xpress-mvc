@@ -31,6 +31,22 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	protected $attributes;
 
 	/**
+	 * Model valid.
+	 *
+	 * @since 0.2.0
+	 * @var boolean
+	 */
+	protected $is_valid;
+
+	/**
+	 * Model errors.
+	 *
+	 * @since 0.2.0
+	 * @var array
+	 */
+	protected $errors = array();
+
+	/**
 	 * Class constructor. Reads schema and sets attributes.
 	 *
 	 * @since 0.2.0
@@ -125,7 +141,6 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 		} else {
 			throw new XPressInvalidModelAttributeException( join( ', ', $invalid_attributes ) );
 		}
-
 	}
 
 	/**
@@ -137,5 +152,49 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 */
 	static function get_schema() {
 		return static::$schema;
+	}
+
+	/**
+	 * Validates model against schema
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return boolean
+	 */
+	public function is_valid() {
+		$this->errors = array();
+		foreach ( static::get_schema()['properties'] as $attribute => $definition ) {
+			// Validate required fields
+			if ( isset( $definition['required'] ) && true === $definition['required'] && empty( $this->attributes[ $attribute ] ) ) {
+				$this->errors[ $attribute ] = sprintf( __( '%s is required.' ), $definition['description'] );
+			} else {
+				// If required is met then perform other validations
+				if ( is_array( $this->attributes ) && array_key_exists( $attribute, $this->attributes ) ) {
+					$value = $this->attributes[ $attribute ];
+					$field_name = $definition['description'];
+					$param_valid = rest_validate_value_from_schema( $value, $definition, $field_name );
+					if ( is_wp_error( $param_valid ) ) {
+						$this->errors[ $attribute ] = $param_valid->errors['rest_invalid_param'][0];
+					}
+				}
+			}
+		}
+		if ( empty( $this->errors ) ) {
+			$this->is_valid = true;
+		} else {
+			$this->is_valid = false;
+		}
+		return $this->is_valid;
+	}
+
+	/**
+	 * Returns the model errors
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return array Model errors
+	 */
+	public function get_errors() {
+		return $this->errors;
 	}
 } // XPress_MVC_Model
