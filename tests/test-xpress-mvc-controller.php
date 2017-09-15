@@ -21,6 +21,14 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Ensure the XPress_MVC_Controller is abstract.
+	 */
+	function test_ensure_abstract_controller() {
+		$this->expectException( Error::class );
+		$this->assertInstanceOf( XPress_MVC_Controller::class, new XPress_MVC_Controller() );
+	}
+
+	/**
 	 * Create an instance.
 	 */
 	function test_new_instance() {

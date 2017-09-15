@@ -13,7 +13,7 @@
  * Base class for a XPress MVC controller.
  * If used as it is, it does nothing. Should be extended to a new class that implements the real controller logic.
  */
-class XPress_MVC_Controller {
+abstract class XPress_MVC_Controller {
 
 	/**
 	 * Constructor.

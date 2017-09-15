@@ -25,7 +25,7 @@ class XPress_MVC_Response extends WP_REST_Response {
 	/**
 	 * Static constructor that accepts an original WP_HTTP_Response and copy its values to the new XPress_MVC_Response.
 	 *
-     * @access public
+	 * @access public
 	 *
 	 * @param WP_HTTP_Response $original The original WP_HTTP_Response to copy values from.
 	 * @return  XPress_VMC_Response
