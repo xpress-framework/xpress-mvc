@@ -66,9 +66,10 @@ abstract class XPress_MVC_Controller {
 		}
 
 		$defaults = array(
-			'methods'         => 'GET',
-			'callback'        => null,
-			'args'            => array(),
+			'route_id' => $route_id,
+			'methods'  => 'GET',
+			'callback' => null,
+			'args'     => array(),
 		);
 		foreach ( $args as $key => &$arg_group ) {
 			if ( ! is_numeric( $key ) ) {

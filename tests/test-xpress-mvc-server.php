@@ -109,4 +109,18 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 		$this->assertEquals( 200, $response->get_status() );
 		$this->assertEquals( $result, $response->get_data() );
 	}
+
+	/**
+	 * Ensures the system finds a route by its route id.
+	 */
+	public function test_get_route_permalink() {
+		$permalink = $this->server->get_route_permalink( 'test-default-value' );
+		$this->assertContains( '/tests/default_value', $permalink );
+
+		$permalink = $this->server->get_route_permalink( 'test-same-url-route' );
+		$this->assertContains( '/tests/default_value', $permalink );
+
+		$permalink = $this->server->get_route_permalink( 'invalid-route-id' );
+		$this->assertNull( $permalink );
+	}
 }

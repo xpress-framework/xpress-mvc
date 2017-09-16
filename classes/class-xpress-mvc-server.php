@@ -72,6 +72,13 @@ class XPress_MVC_Server {
 	 */
 	protected $route_options = array();
 
+	/**
+	 * Routes registered by their route ids.
+	 *
+	 * @since 0.2.0
+	 * @var array
+	 */
+	protected $route_ids = array();
 
 	/**
 	 * Instantiates the XPress server.
@@ -289,14 +296,13 @@ class XPress_MVC_Server {
 	 *                           Default false.
 	 */
 	public function register_route( $route_id, $route, $route_args, $override = false ) {
-		// Associative to avoid double-registration.
-		$route_args['route_id'] = $route_id;
-
-		if ( $override || empty( $this->endpoints[ $route ] ) ) {
+		if ( $override || ! array_key_exists( $route, $this->endpoints ) || empty( $this->endpoints[ $route ] ) ) {
 			$this->endpoints[ $route ] = $route_args;
 		} else {
 			$this->endpoints[ $route ] = array_merge( $this->endpoints[ $route ], $route_args );
 		}
+
+		$this->route_ids[ $route_id ] = $route;
 	}
 
 	/**
@@ -707,18 +713,9 @@ class XPress_MVC_Server {
 	 * @return string|null      The route permalink with the arguments populated or null if invalid $route_id.
 	 */
 	public function get_route_permalink( $route_id, $arguments = array() ) {
-		$route = null;
-
-		// Find the route by the route_id.
-		foreach ( $this->route_options as $route_url => $options ) {
-			if ( array_key_exists( 'route_id', $options ) && $options['route_id'] === $route_id ) {
-				$route = $route_url;
-				break;
-			}
-		}
-
-		// Return null if can't find a route.
-		if ( empty( $route ) ) {
+		if ( array_key_exists( $route_id, $this->route_ids ) && ! empty( $this->route_ids[ $route_id ] ) ) {
+			$route = $this->route_ids[ $route_id ];
+		} else {
 			return null;
 		}
 

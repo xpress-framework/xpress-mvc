@@ -54,6 +54,11 @@ class XPress_MVC_Sample_Controller extends XPress_MVC_Controller {
 				),
 			),
 		) );
+
+		$this->register_route( 'test-same-url-route', '/tests/default_value', array(
+			'methods'  => array( 'POST' ),
+			'callback' => '__return_null',
+		) );
 	}
 
 	/**
