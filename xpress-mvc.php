@@ -20,6 +20,7 @@
 
 // Require necessary classes.
 require_once 'classes/class-xpress-mvc-no-route.php';
+require_once 'classes/class-xpress-mvc-request.php';
 require_once 'classes/class-xpress-mvc-response.php';
 require_once 'classes/class-xpress-mvc-server.php';
 require_once 'classes/class-xpress-mvc-controller.php';
