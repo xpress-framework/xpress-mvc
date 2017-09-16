@@ -36,7 +36,7 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if the method Ok returns a valid response.
+	 * Test if the method ok returns a valid response.
 	 */
 	function test_ok() {
 		$controller = new XPress_MVC_Sample_Controller();
@@ -63,7 +63,7 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if the method Created returns a valid response.
+	 * Test if the method created returns a valid response.
 	 */
 	function test_created() {
 		$controller = new XPress_MVC_Sample_Controller();
@@ -75,7 +75,7 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 
 		$template = 'test_template';
 
-		// Test empty ok response.
+		// Test empty created response.
 		$response = $controller->created( $location );
 		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
 		$this->assertArrayHasKey( 'Location', $response->get_headers() );
@@ -99,5 +99,89 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 		$this->assertEquals( $template, $response->template );
 	}
 
-	// TODO: Implement all response methods + register_route test.
+	/**
+	 * Test if the method redirect returns a valid response.
+	 */
+	function test_redirect() {
+		$controller = new XPress_MVC_Sample_Controller();
+		$location = '/test_location/123';
+
+		// Test temporary redirect.
+		$response = $controller->redirect( $location, false );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertArrayHasKey( 'Location', $response->get_headers() );
+		$this->assertEquals( $location, $response->get_headers()['Location'] );
+		$this->assertEquals( 302, $response->get_status() );
+
+		// Test permanent redirect.
+		$response = $controller->redirect( $location, true );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertArrayHasKey( 'Location', $response->get_headers() );
+		$this->assertEquals( $location, $response->get_headers()['Location'] );
+		$this->assertEquals( 301, $response->get_status() );
+	}
+
+	/**
+	 * Test if the method not_found returns a valid response.
+	 */
+	function test_not_found() {
+		$controller = new XPress_MVC_Sample_Controller();
+
+		$data = array(
+			'key' => 'value',
+		);
+
+		$template = 'test_template';
+
+		// Test empty not_found response.
+		$response = $controller->not_found();
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 404, $response->get_status() );
+		$this->assertEquals( '404', $response->template );
+
+		// Test not_found response with data.
+		$response = $controller->not_found( $data );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 404, $response->get_status() );
+		$this->assertEquals( $data, $response->get_data() );
+
+		// Test not_found response with template.
+		$response = $controller->not_found( null, $template );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 404, $response->get_status() );
+		$this->assertEquals( $template, $response->template );
+	}
+
+	/**
+	 * Test if the method not_found returns a valid response.
+	 */
+	function test_error() {
+		$controller = new XPress_MVC_Sample_Controller();
+
+		$data = array(
+			'key' => 'value',
+		);
+
+		$template = 'test_template';
+
+		// Test empty error response.
+		$response = $controller->error();
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 500, $response->get_status() );
+		$this->assertEquals( '404', $response->template );
+
+		// Test error response with data.
+		$response = $controller->error( $data );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 500, $response->get_status() );
+		$this->assertEquals( $data, $response->get_data() );
+
+		// Test error response with template.
+		$response = $controller->error( null, $template );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 500, $response->get_status() );
+		$this->assertEquals( $template, $response->template );
+	}
+
+	// TODO: Implement register_route test.
 }
