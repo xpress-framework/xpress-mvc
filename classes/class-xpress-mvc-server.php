@@ -160,7 +160,7 @@ class XPress_MVC_Server {
 			$path = $this->get_clean_path();
 		}
 
-		$request = new WP_REST_Request( $_SERVER['REQUEST_METHOD'], $path );
+		$request = new XPress_MVC_Request( $_SERVER['REQUEST_METHOD'], $path );
 
 		$request->set_query_params( wp_unslash( $_GET ) );
 		$request->set_body_params( wp_unslash( $_POST ) );
@@ -481,16 +481,7 @@ class XPress_MVC_Server {
 					}
 
 					$request->set_default_params( $defaults );
-
-					$check_required = $request->has_valid_params();
-					if ( is_wp_error( $check_required ) ) {
-						$response = $check_required;
-					} else {
-						$check_sanitized = $request->sanitize_params();
-						if ( is_wp_error( $check_sanitized ) ) {
-							$response = $check_sanitized;
-						}
-					}
+					$request->process_params();
 				}
 
 				/**
