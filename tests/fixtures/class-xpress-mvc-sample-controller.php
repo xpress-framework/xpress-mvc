@@ -59,7 +59,7 @@ class XPress_MVC_Sample_Controller extends XPress_MVC_Controller {
 	/**
 	 * Callback to be used in tests.
 	 * @param  WP_REST_Request $request The request object.
-	 * @return array                    The array will contains two keys: params and errors, bypassed from the request object.
+	 * @return array                    The array will contain: params, has_errors and errors, bypassed from the request object.
 	 */
 	public function return_params_and_errors( XPress_MVC_Request $request ) {
 		return array(
