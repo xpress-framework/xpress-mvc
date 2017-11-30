@@ -227,7 +227,7 @@ class XPress_MVC_Server {
 		$GLOBALS['xpress_viewmodel'] = $result->get_data();
 
 		// Define the template to be rendered.
-		$template_name = $result->template ?: $this->get_route_options( $result->get_matched_route() )['route_id'];
+		$template_name = $result->template ?: $result->get_matched_handler()['route_id'];
 		$template = $this->get_template( $template_name );
 		$GLOBALS['xpress_template'] = $template;
 
@@ -389,22 +389,6 @@ class XPress_MVC_Server {
 		} // End foreach().
 
 		return $endpoints;
-	}
-
-	/**
-	 * Retrieves specified options for a route.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @param string $route Route pattern to fetch options for.
-	 * @return array|null Data as an associative array if found, or null if not found.
-	 */
-	public function get_route_options( $route ) {
-		if ( ! isset( $this->route_options[ $route ] ) ) {
-			return null;
-		}
-
-		return $this->route_options[ $route ];
 	}
 
 	/**

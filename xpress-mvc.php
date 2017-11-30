@@ -97,6 +97,10 @@ function xpress_mvc_ensure_response( $response ) {
 		return $response;
 	}
 
+	if ( $response instanceof XPress_MVC_Response ) {
+		return $response;
+	}
+
 	if ( $response instanceof WP_HTTP_Response ) {
 		return XPress_MVC_Response::from_wp_http_response( $response );
 	}
