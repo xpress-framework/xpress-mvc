@@ -13,7 +13,7 @@
  * Base class for a XPress MVC controller.
  * If used as it is, it does nothing. Should be extended to a new class that implements the real controller logic.
  */
-class XPress_MVC_Controller {
+abstract class XPress_MVC_Controller {
 
 	/**
 	 * Constructor.
@@ -66,9 +66,10 @@ class XPress_MVC_Controller {
 		}
 
 		$defaults = array(
-			'methods'         => 'GET',
-			'callback'        => null,
-			'args'            => array(),
+			'route_id' => $route_id,
+			'methods'  => 'GET',
+			'callback' => null,
+			'args'     => array(),
 		);
 		foreach ( $args as $key => &$arg_group ) {
 			if ( ! is_numeric( $key ) ) {

@@ -72,6 +72,13 @@ class XPress_MVC_Server {
 	 */
 	protected $route_options = array();
 
+	/**
+	 * Routes registered by their route ids.
+	 *
+	 * @since 0.2.0
+	 * @var array
+	 */
+	protected $route_ids = array();
 
 	/**
 	 * Instantiates the XPress server.
@@ -160,7 +167,7 @@ class XPress_MVC_Server {
 			$path = $this->get_clean_path();
 		}
 
-		$request = new WP_REST_Request( $_SERVER['REQUEST_METHOD'], $path );
+		$request = new XPress_MVC_Request( $_SERVER['REQUEST_METHOD'], $path );
 
 		$request->set_query_params( wp_unslash( $_GET ) );
 		$request->set_body_params( wp_unslash( $_POST ) );
@@ -173,8 +180,8 @@ class XPress_MVC_Server {
 		 * $_GET['_method']. If that is not set, we check for the HTTP_X_HTTP_METHOD_OVERRIDE
 		 * header.
 		 */
-		if ( isset( $_GET['_method'] ) ) {
-			$request->set_method( $_GET['_method'] );
+		if ( isset( $_REQUEST['_method'] ) ) {
+			$request->set_method( $_REQUEST['_method'] );
 		} elseif ( isset( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] ) ) {
 			$request->set_method( $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] );
 		}
@@ -289,14 +296,13 @@ class XPress_MVC_Server {
 	 *                           Default false.
 	 */
 	public function register_route( $route_id, $route, $route_args, $override = false ) {
-		// Associative to avoid double-registration.
-		$route_args['route_id'] = $route_id;
-
-		if ( $override || empty( $this->endpoints[ $route ] ) ) {
+		if ( $override || ! array_key_exists( $route, $this->endpoints ) || empty( $this->endpoints[ $route ] ) ) {
 			$this->endpoints[ $route ] = $route_args;
 		} else {
 			$this->endpoints[ $route ] = array_merge( $this->endpoints[ $route ], $route_args );
 		}
+
+		$this->route_ids[ $route_id ] = $route;
 	}
 
 	/**
@@ -481,16 +487,7 @@ class XPress_MVC_Server {
 					}
 
 					$request->set_default_params( $defaults );
-
-					$check_required = $request->has_valid_params();
-					if ( is_wp_error( $check_required ) ) {
-						$response = $check_required;
-					} else {
-						$check_sanitized = $request->sanitize_params();
-						if ( is_wp_error( $check_sanitized ) ) {
-							$response = $check_sanitized;
-						}
-					}
+					$request->process_params();
 				}
 
 				/**
@@ -716,18 +713,9 @@ class XPress_MVC_Server {
 	 * @return string|null      The route permalink with the arguments populated or null if invalid $route_id.
 	 */
 	public function get_route_permalink( $route_id, $arguments = array() ) {
-		$route = null;
-
-		// Find the route by the route_id.
-		foreach ( $this->route_options as $route_url => $options ) {
-			if ( array_key_exists( 'route_id', $options ) && $options['route_id'] === $route_id ) {
-				$route = $route_url;
-				break;
-			}
-		}
-
-		// Return null if can't find a route.
-		if ( empty( $route ) ) {
+		if ( array_key_exists( $route_id, $this->route_ids ) && ! empty( $this->route_ids[ $route_id ] ) ) {
+			$route = $this->route_ids[ $route_id ];
+		} else {
 			return null;
 		}
 
