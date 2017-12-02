@@ -109,7 +109,7 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 */
 	public function __get( $attribute ) {
 		if ( $this->__isset( $attribute ) ) {
-			return $this->attributes[ $attribute ];
+			return isset( $this->attributes[ $attribute ] ) ? $this->attributes[ $attribute ] : null;
 		} else {
 			throw new XPressInvalidModelAttributeException( $attribute );
 		}
