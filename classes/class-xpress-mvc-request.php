@@ -57,6 +57,24 @@ class XPress_MVC_Request extends WP_REST_Request {
 	}
 
 	/**
+	 * Retrieves merged parameters from the request.
+	 *
+	 * The equivalent of get_param(), but returns all parameters for the request.
+	 * Handles merging all the available values into a single array.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @return array Map of key to value.
+	 */
+	public function get_params() {
+		$params = parent::get_params();
+
+		unset( $params['_method'] );
+
+		return $params;
+	}
+
+	/**
 	 * Parses error data from rest_invalid_param error in a WP_Error object.
 	 * @param  WP_Error $error The WP_Error object containing the error data.
 	 */
