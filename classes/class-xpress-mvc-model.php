@@ -177,6 +177,12 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 					$param_valid = rest_validate_value_from_schema( $value, $definition, $field_name );
 					if ( is_wp_error( $param_valid ) ) {
 						$this->errors[ $attribute ] = $param_valid->errors['rest_invalid_param'][0];
+					} elseif ( isset( $definition['validate_callback'] ) ) {
+						$param_valid = call_user_func( $definition['validate_callback'], $value );
+						if ( is_wp_error( $param_valid ) ) {
+							// XPress MVC will pick the error text from the WP_Error 'xpress_mvc_invalid_param' error key.
+							$this->errors[ $attribute ] = $param_valid->errors['xpress_mvc_invalid_param'][0];
+						}
 					}
 				}
 			}

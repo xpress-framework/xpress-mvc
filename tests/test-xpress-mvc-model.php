@@ -183,5 +183,31 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->assertNotEmpty( $model->get_errors()['first_name'] );
 		$this->assertEquals( 'First Name is required.', $model->get_errors()['first_name'] );
 	}
+
+	/**
+	 * Validates model against schema using custom validation functions
+	 */
+	function test_validate_callback() {
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 35,
+		) );
+		$this->assertTrue( $model->is_valid() );
+
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 120,
+		) );
+		$this->assertFalse( $model->is_valid() );
+		$this->assertEquals( '120 is not a valid age.', $model->get_errors()['age'] );
+
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 0,
+		) );
+		$this->assertFalse( $model->is_valid() );
+		$this->assertEquals( '0 is not a valid age.', $model->get_errors()['age'] );
+
+	}
 }
 
