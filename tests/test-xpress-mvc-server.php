@@ -22,7 +22,7 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test routes declaration.
+	 * Test routes registration.
 	 */
 	function test_register_routes() {
 		$routes = $this->server->get_routes();

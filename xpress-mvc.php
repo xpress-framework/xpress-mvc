@@ -124,7 +124,7 @@ function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
 /**
  * Registers a route
  *
- * @since 0.1.0
+ * @since 0.2.0
  *
  * @param string $route_id   The route ID.
  * @param string $route      The REST route.
@@ -134,4 +134,15 @@ function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
  */
 function xpress_mvc_register_route( $route_id, $route, $args, $override = false ) {
 	xpress_mvc_get_server()->register_route( $route_id, $route, $args, $override );
+}
+
+/**
+ * Hooks route registration to xpress_mvc_init very early
+ *
+ * @since 0.2.0
+ *
+ * @param callable $callback The function where route registration takes place
+ */
+function xpress_mvc_register_routes( $callback ) {
+	add_action( 'xpress_mvc_init', $callback, 5 );
 }

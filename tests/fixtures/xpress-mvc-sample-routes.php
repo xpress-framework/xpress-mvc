@@ -9,7 +9,7 @@
  * @since      0.2.0
  */
 
-add_action( 'xpress_mvc_init', function() {
+xpress_mvc_register_routes( function() {
 	xpress_mvc_register_route( 'test-default-value', '/tests/default_value', array(
 		'methods' => 'GET',
 		'callback' => '__return_null',
