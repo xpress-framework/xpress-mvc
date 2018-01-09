@@ -18,6 +18,11 @@ class XPress_MVC_Controller_Test extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		require_once 'fixtures/class-xpress-mvc-sample-controller.php';
+		$this->controller = new XPress_MVC_Sample_Controller();
+
+		// Reset MVC server to ensure only our routes are registered.
+		$GLOBALS['xpress_mvc_server'] = null;
+		$this->server = xpress_mvc_get_server();
 	}
 
 	/**

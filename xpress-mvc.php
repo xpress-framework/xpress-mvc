@@ -27,6 +27,7 @@ require_once 'classes/class-xpress-mvc-controller.php';
 require_once 'classes/interface-xpress-model-crud.php';
 require_once 'classes/class-xpress-mvc-model.php';
 require_once 'classes/exception-xpress-invalid-model-attribute.php';
+require_once 'classes/class-xpress-mvc-routes.php';
 
 // Hook to parse_request to handle the MVC requests.
 add_action( 'parse_request', 'xpress_mvc_loaded' );

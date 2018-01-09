@@ -17,8 +17,8 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	 * Initialize XPress_MVC_Server.
 	 */
 	public function setUp() {
-		require_once 'fixtures/class-xpress-mvc-sample-controller.php';
-		$this->controller = new XPress_MVC_Sample_Controller();
+		require_once 'fixtures/class-xpress-mvc-sample-routes.php';
+		new XPress_MVC_Sample_Routes();
 
 		// Reset MVC server to ensure only our routes are registered.
 		$GLOBALS['xpress_mvc_server'] = null;
@@ -30,16 +30,11 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	 */
 	public function test_default_param() {
 		$request = new XPress_MVC_Request( 'GET', '/tests/default_value' );
-		$default = array(
-			'foo' => 'bar',
-		);
 
 		$response = $this->server->dispatch( $request );
 
 		$this->assertInstanceOf( 'XPress_MVC_Response', $response );
 		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( $default, $request->get_params() );
-		$this->assertEquals( 'bar', $request['foo'] );
 	}
 
 	/**
@@ -59,20 +54,6 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if an optional value is not return when not present in request.
-	 */
-	public function test_optional_param() {
-		$request = new XPress_MVC_Request( 'GET', '/tests/optional_value' );
-		$request->set_query_params( array() );
-
-		$response = $this->server->dispatch( $request );
-
-		$this->assertInstanceOf( 'XPress_MVC_Response', $response );
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertArrayNotHasKey( 'foo', (array) $request );
-	}
-
-	/**
 	 * Test if GET route answers to HEAD requests.
 	 */
 	public function test_head_request_handled_by_get() {
@@ -81,33 +62,6 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( 200, $response->get_status() );
-	}
-
-
-	/**
-	 * Ensure request is sent to callback in case of invalid arguments.
-	 */
-	public function test_invalid_argument() {
-		$request = new XPress_MVC_Request( 'GET', '/tests/invalid_argument' );
-		$request->set_query_params( array(
-		 	'foo' => 'abc',
-		) );
-		$errors = array(
-			'foo' => array(
-				'Invalid parameter.',
-		  	),
-		);
-		$result = array(
-			'params'     => $request->get_params(),
-			'has_errors' => true,
-			'errors'     => $errors,
-		);
-
-		$response = $this->server->dispatch( $request );
-
-		$this->assertInstanceOf( 'XPress_MVC_Response', $response );
-		$this->assertEquals( 200, $response->get_status() );
-		$this->assertEquals( $result, $response->get_data() );
 	}
 
 	/**
