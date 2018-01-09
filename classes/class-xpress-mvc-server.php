@@ -291,15 +291,55 @@ class XPress_MVC_Server {
 	 *
 	 * @param string $route_id   The route ID.
 	 * @param string $route      The REST route.
-	 * @param array  $route_args Route arguments.
+	 * @param array  $args Route arguments.
 	 * @param bool   $override   Optional. Whether the route should be overridden if it already exists.
 	 *                           Default false.
 	 */
-	public function register_route( $route_id, $route, $route_args, $override = false ) {
-		if ( $override || ! array_key_exists( $route, $this->endpoints ) || empty( $this->endpoints[ $route ] ) ) {
-			$this->endpoints[ $route ] = $route_args;
+	public function register_route( $route_id, $route, $args, $override = false ) {
+		if ( empty( $route_id ) ) {
+			_doing_it_wrong( 'xpress_register_route', __( 'Routes must be have a unique identifier.' ), '0.1.0' );
+			return false;
+		}
+
+		if ( empty( $route ) ) {
+			_doing_it_wrong( 'xpress_register_route', __( 'Route must be specified.' ), '0.1.0' );
+			return false;
+		}
+
+		if ( isset( $args['args'] ) ) {
+			$common_args = $args['args'];
+			unset( $args['args'] );
 		} else {
-			$this->endpoints[ $route ] = array_merge( $this->endpoints[ $route ], $route_args );
+			$common_args = array();
+		}
+
+		if ( isset( $args['callback'] ) ) {
+			// Upgrade a single set to multiple.
+			$args = array( $args );
+		}
+
+		$defaults = array(
+			'route_id' => $route_id,
+			'methods'  => 'GET',
+			'callback' => null,
+			'args'     => array(),
+		);
+		foreach ( $args as $key => &$arg_group ) {
+			if ( ! is_numeric( $key ) ) {
+				// Route option, skip here.
+				continue;
+			}
+
+			$arg_group = array_merge( $defaults, $arg_group );
+			$arg_group['args'] = array_merge( $common_args, $arg_group['args'] );
+		}
+
+		$route = '/' . trim( $route, '/' );
+
+		if ( $override || ! array_key_exists( $route, $this->endpoints ) || empty( $this->endpoints[ $route ] ) ) {
+			$this->endpoints[ $route ] = $args;
+		} else {
+			$this->endpoints[ $route ] = array_merge( $this->endpoints[ $route ], $args );
 		}
 
 		$this->route_ids[ $route_id ] = $route;

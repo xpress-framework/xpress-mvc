@@ -27,7 +27,6 @@ require_once 'classes/class-xpress-mvc-controller.php';
 require_once 'classes/interface-xpress-model-crud.php';
 require_once 'classes/class-xpress-mvc-model.php';
 require_once 'classes/exception-xpress-invalid-model-attribute.php';
-require_once 'classes/class-xpress-mvc-routes.php';
 
 // Hook to parse_request to handle the MVC requests.
 add_action( 'parse_request', 'xpress_mvc_loaded' );
@@ -120,4 +119,19 @@ function xpress_mvc_ensure_response( $response ) {
  */
 function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
 	return xpress_mvc_get_server()->get_route_permalink( $route_id, $arguments );
+}
+
+/**
+ * Registers a route
+ *
+ * @since 0.1.0
+ *
+ * @param string $route_id   The route ID.
+ * @param string $route      The REST route.
+ * @param array  $args Route arguments.
+ * @param bool   $override   Optional. Whether the route should be overridden if it already exists.
+ *                           Default false.
+ */
+function xpress_mvc_register_route( $route_id, $route, $args, $override = false ) {
+	xpress_mvc_get_server()->register_route( $route_id, $route, $args, $override );
 }

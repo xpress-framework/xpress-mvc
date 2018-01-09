@@ -17,15 +17,14 @@ class XPress_MVC_Routes_Test extends WP_UnitTestCase {
 	 * Creates XPress_MVC_Controller subclass.
 	 */
 	public function setUp() {
-		require_once 'fixtures/class-xpress-mvc-sample-routes.php';
-		new XPress_MVC_Sample_Routes();
+		require 'fixtures/class-xpress-mvc-sample-routes.php';
 		// Reset MVC server to ensure only our routes are registered.
 		$GLOBALS['xpress_mvc_server'] = null;
 		$this->server = xpress_mvc_get_server();
 	}
 
 	/**
-	 * Test if the method ok returns a valid response.
+	 * Test routes declaration.
 	 */
 	function test_register_routes() {
 		$routes = $this->server->get_routes();
