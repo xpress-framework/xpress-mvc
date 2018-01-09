@@ -346,6 +346,29 @@ class XPress_MVC_Server {
 	}
 
 	/**
+	 * Unregisters a route
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param string $route_id   The route ID.
+	 */
+	function unregister_route( $route_id ) {
+		foreach ( $this->endpoints as $path => $routes ) {
+			foreach ($routes as $key => $route ) {
+				if ( $route_id == $route['route_id'] ) {
+					unset( $this->endpoints[ $path ][ $key ] );
+				}
+			}
+			if ( 0 === count( $this->endpoints[ $path ] ) ) {
+				unset( $this->endpoints[ $path ] );
+			}
+		}
+		if ( isset( $this->route_ids[ $route_id ] ) ) {
+			unset( $this->route_ids[ $route_id ] );
+		}
+	}
+
+	/**
 	 * Retrieves the route map.
 	 *
 	 * The route map is an associative array with path regexes as the keys. The

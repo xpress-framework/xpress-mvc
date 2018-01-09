@@ -25,3 +25,10 @@ xpress_mvc_register_routes( function() {
 		'callback' => '__return_true',
 	) );
 } );
+
+
+if ( ! function_exists( 'xpress_mvc_unregister_routes' ) ) {
+	function xpress_mvc_unregister_routes() {
+		xpress_mvc_unregister_route( 'test-head-request' );
+	}
+}
