@@ -512,7 +512,10 @@ class XPress_MVC_Server {
 					continue;
 				}
 
-				if ( ! $this->xpress_mvc_is_callable( $callback ) ) {
+				// Convert Controller->method syntax to valid callable
+				$callback = $this->make_callable( $callback );
+
+				if ( ! is_callable( $callback ) ) {
 					$response = new WP_Error( 'rest_invalid_handler', __( 'The handler for the route is invalid' ), array(
 						'status' => 500,
 					) );
@@ -589,7 +592,7 @@ class XPress_MVC_Server {
 					if ( null !== $dispatch_result ) {
 						$response = $dispatch_result;
 					} else {
-						$response = $this->xpress_mvc_call_user_func( $callback, $request );
+						$response = call_user_func( $callback, $request );
 					}
 				}
 
@@ -799,35 +802,16 @@ class XPress_MVC_Server {
 	 *
 	 * @since 0.2.0
 	 *
-	 * @param callable $function  Callable to validate.
-	 * @return boolean      True if is valid, false is not.
+	 * @param callable $function  Callable to convert.
+	 * @return callable      Converted callable.
 	 */
-	public function xpress_mvc_is_callable( $function ) {
+	public function make_callable( $function ) {
 		if ( false !== strpos( $function, '->' ) ) {
 			$callable = explode( '->', $function );
 			$class = new $callable[0];
 			$method = $callable[1];
 			$function = array( $class, $method );
 		}
-		return is_callable( $function );
-	}
-
-	/**
-	 * Executes a user defined callback with support for Controller->method syntax.
-	 *
-	 * @since 0.2.0
-	 *
-	 * @param callable $function  Callable to execute.
-	 * @return value|false      The value returned by callable or false on failure.
-	 */
-	public function xpress_mvc_call_user_func( $function ) {
-		// If function has Controller->method syntax then instanciate Controller and construct a callable with instace and public method.
-		if ( false !== strpos( $function, '->' ) ) {
-			$callable = explode( '->', $function );
-			$class = new $callable[0];
-			$method = $callable[1];
-			$function = array( $class, $method );
-		}
-		return call_user_func( $function );
+		return $function;
 	}
 }

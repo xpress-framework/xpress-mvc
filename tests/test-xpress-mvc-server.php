@@ -111,20 +111,10 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test if 'Controller->method' is a valid callable.
+	 * Test if 'Controller->method' is converted to a valid callable.
 	 */
 	public function test_xpress_mvc_is_callable() {
-		$this->assertTrue( $this->server->xpress_mvc_is_callable( 'XPress_MVC_Sample_Controller->ok' ) );
-		$this->assertFalse( $this->server->xpress_mvc_is_callable( 'XPress_MVC_Sample_Controller->unexisting_method' ) );
-	}
-
-	/**
-	 * Test if possible to run callables like 'Controller->method'.
-	 */
-	public function test_xpress_mvc_call_user_func() {
-		// Test Controller->method syntax.
-		$response = $this->server->xpress_mvc_call_user_func( 'XPress_MVC_Sample_Controller->ok' );
-		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
-		$this->assertEquals( 200, $response->get_status() );
+		$this->assertTrue( is_callable( $this->server->make_callable( 'XPress_MVC_Sample_Controller->ok' ) ) );
+		$this->assertFalse( is_callable( $this->server->make_callable( 'XPress_MVC_Sample_Controller->unexisting_method' ) ) );
 	}
 }
