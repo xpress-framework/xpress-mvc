@@ -43,20 +43,17 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 		$this->assertEquals( '__return_null', $routes['/tests/default_value'][1]['callback'] );
 	}
 
-
 	/**
 	 * Test routes unregistration.
 	 */
 	function test_unregister_routes() {
-		xpress_mvc_register_routes( 'xpress_mvc_unregister_routes' );
-
 		$this->server = xpress_mvc_get_server();
 
 		$routes = $this->server->get_routes();
 
-		$this->assertEquals( 1, count( $routes ) );
+		$this->assertEquals( 2, count( $routes ) );
 
-		$this->assertArrayNotHasKey( '/tests/head_request', $routes );
+		$this->assertArrayNotHasKey( '/tests/delete_route', $routes );
 	}
 
 	/**

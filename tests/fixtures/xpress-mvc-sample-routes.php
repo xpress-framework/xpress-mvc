@@ -9,7 +9,7 @@
  * @since      0.2.0
  */
 
-xpress_mvc_register_routes( function() {
+add_action( 'xpress_mvc_init', function() {
 	xpress_mvc_register_route( 'test-default-value', '/tests/default_value', array(
 		'methods' => 'GET',
 		'callback' => '__return_null',
@@ -24,11 +24,13 @@ xpress_mvc_register_routes( function() {
 		'methods'  => 'GET',
 		'callback' => '__return_true',
 	) );
+
+	xpress_mvc_register_route( 'test-delete-route', '/tests/delete_route', array(
+		'methods'  => 'GET',
+		'callback' => '__return_true',
+	) );
 } );
 
-
-if ( ! function_exists( 'xpress_mvc_unregister_routes' ) ) {
-	function xpress_mvc_unregister_routes() {
-		xpress_mvc_unregister_route( 'test-head-request' );
-	}
-}
+add_action( 'xpress_mvc_init', function() {
+	xpress_mvc_unregister_route( 'test-delete-route' );
+}, 999 );

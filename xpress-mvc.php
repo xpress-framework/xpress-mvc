@@ -146,17 +146,3 @@ function xpress_mvc_register_route( $route_id, $route, $args, $override = false 
 function xpress_mvc_unregister_route( $route_id ) {
 	xpress_mvc_get_server()->unregister_route( $route_id );
 }
-
-/**
- * Hooks routes registration to xpress_mvc_init very early
- *
- * @since 0.2.0
- *
- * @param callable $callback The function where route registration takes place
- */
-function xpress_mvc_register_routes( $callback ) {
-	// Reset MVC server to ensure routes are loaded again.
-	$GLOBALS['xpress_mvc_server'] = null;
-
-	add_action( 'xpress_mvc_init', $callback, 5 );
-}
