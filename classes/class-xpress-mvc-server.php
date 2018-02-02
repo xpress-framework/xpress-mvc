@@ -512,7 +512,7 @@ class XPress_MVC_Server {
 					continue;
 				}
 
-				if ( ! is_callable( $callback ) ) {
+				if ( ! $this->xpress_mvc_is_callable( $callback ) ) {
 					$response = new WP_Error( 'rest_invalid_handler', __( 'The handler for the route is invalid' ), array(
 						'status' => 500,
 					) );
@@ -589,7 +589,7 @@ class XPress_MVC_Server {
 					if ( null !== $dispatch_result ) {
 						$response = $dispatch_result;
 					} else {
-						$response = call_user_func( $callback, $request );
+						$response = $this->xpress_mvc_call_user_func( $callback, $request );
 					}
 				}
 
@@ -792,5 +792,42 @@ class XPress_MVC_Server {
 
 		// Build the permalink.
 		return home_url( $route );
+	}
+
+	/**
+	 * Ensure Controller->method syntax is callable.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param callable $function  Callable to validate.
+	 * @return boolean      True if is valid, false is not.
+	 */
+	public function xpress_mvc_is_callable( $function ) {
+		if ( false !== strpos( $function, '->' ) ) {
+			$callable = explode( '->', $function );
+			$class = new $callable[0];
+			$method = $callable[1];
+			$function = array( $class, $method );
+		}
+		return is_callable( $function );
+	}
+
+	/**
+	 * Executes a user defined callback with support for Controller->method syntax.
+	 *
+	 * @since 0.2.0
+	 *
+	 * @param callable $function  Callable to execute.
+	 * @return value|false      The value returned by callable or false on failure.
+	 */
+	public function xpress_mvc_call_user_func( $function ) {
+		// If function has Controller->method syntax then instanciate Controller and construct a callable with instace and public method.
+		if ( false !== strpos( $function, '->' ) ) {
+			$callable = explode( '->', $function );
+			$class = new $callable[0];
+			$method = $callable[1];
+			$function = array( $class, $method );
+		}
+		return call_user_func( $function );
 	}
 }

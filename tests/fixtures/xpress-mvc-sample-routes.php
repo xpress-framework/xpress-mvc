@@ -12,7 +12,7 @@
 add_action( 'xpress_mvc_init', function() {
 	xpress_mvc_register_route( 'test-default-value', '/tests/default_value', array(
 		'methods' => 'GET',
-		'callback' => '__return_null',
+		'callback' => 'XPress_MVC_Sample_Controller->ok',
 	) );
 
 	xpress_mvc_register_route( 'test-same-url-route', '/tests/default_value', array(

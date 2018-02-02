@@ -17,6 +17,7 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	 * Initialize XPress_MVC_Server.
 	 */
 	public function setUp() {
+		require_once 'fixtures/class-xpress-mvc-sample-controller.php';
 		require 'fixtures/xpress-mvc-sample-routes.php';
 		$this->server = xpress_mvc_get_server();
 	}
@@ -36,7 +37,7 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 
 		$this->assertArrayHasKey( 'GET', $routes['/tests/default_value'][0]['methods'] );
 		$this->assertEquals( 'test-default-value', $routes['/tests/default_value'][0]['route_id'] );
-		$this->assertEquals( '__return_null', $routes['/tests/default_value'][0]['callback'] );
+		$this->assertEquals( 'XPress_MVC_Sample_Controller->ok', $routes['/tests/default_value'][0]['callback'] );
 
 		$this->assertArrayHasKey( 'POST', $routes['/tests/default_value'][1]['methods'] );
 		$this->assertEquals( 'test-same-url-route', $routes['/tests/default_value'][1]['route_id'] );
@@ -107,5 +108,23 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 
 		$permalink = $this->server->get_route_permalink( 'invalid-route-id' );
 		$this->assertNull( $permalink );
+	}
+
+	/**
+	 * Test if 'Controller->method' is a valid callable.
+	 */
+	public function test_xpress_mvc_is_callable() {
+		$this->assertTrue( $this->server->xpress_mvc_is_callable( 'XPress_MVC_Sample_Controller->ok' ) );
+		$this->assertFalse( $this->server->xpress_mvc_is_callable( 'XPress_MVC_Sample_Controller->unexisting_method' ) );
+	}
+
+	/**
+	 * Test if possible to run callables like 'Controller->method'.
+	 */
+	public function test_xpress_mvc_call_user_func() {
+		// Test Controller->method syntax.
+		$response = $this->server->xpress_mvc_call_user_func( 'XPress_MVC_Sample_Controller->ok' );
+		$this->assertInstanceOf( XPress_MVC_Response::class, $response );
+		$this->assertEquals( 200, $response->get_status() );
 	}
 }
