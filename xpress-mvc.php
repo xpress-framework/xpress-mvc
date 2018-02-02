@@ -120,3 +120,29 @@ function xpress_mvc_ensure_response( $response ) {
 function xpress_mvc_get_route_permalink( $route_id, $arguments = array() ) {
 	return xpress_mvc_get_server()->get_route_permalink( $route_id, $arguments );
 }
+
+/**
+ * Registers a route
+ *
+ * @since 0.2.0
+ *
+ * @param string $route_id   The route ID.
+ * @param string $route      The REST route.
+ * @param array  $args Route arguments.
+ * @param bool   $override   Optional. Whether the route should be overridden if it already exists.
+ *                           Default false.
+ */
+function xpress_mvc_register_route( $route_id, $route, $args, $override = false ) {
+	xpress_mvc_get_server()->register_route( $route_id, $route, $args, $override );
+}
+
+/**
+ * Unregisters a route
+ *
+ * @since 0.2.0
+ *
+ * @param string $route_id   The route ID.
+ */
+function xpress_mvc_unregister_route( $route_id ) {
+	xpress_mvc_get_server()->unregister_route( $route_id );
+}
