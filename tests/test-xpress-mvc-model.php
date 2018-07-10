@@ -209,5 +209,31 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->assertEquals( '0 is not a valid age.', $model->get_errors()['age'] );
 
 	}
+
+	/**
+	 * Remember modified attributes.
+	 */
+	function test_modified_attributes() {
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 35,
+		) );
+
+		$model->age = 20;
+
+		$modified_attributes = $model->modified_attributes();
+
+		$this->assertArrayHasKey( 'age', $modified_attributes );
+		$this->assertEquals( 20, $modified_attributes['age'] );
+		$this->assertArrayNotHasKey( 'first_name', $modified_attributes );
+
+		$model->first_name = 'Mary';
+
+		$modified_attributes = $model->modified_attributes();
+		$this->assertArrayHasKey( 'age', $modified_attributes );
+		$this->assertEquals( 20, $modified_attributes['age'] );
+		$this->assertArrayHasKey( 'first_name', $modified_attributes );
+		$this->assertEquals( 'Mary', $modified_attributes['first_name'] );
+	}
 }
 
