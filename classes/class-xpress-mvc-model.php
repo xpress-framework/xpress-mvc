@@ -43,6 +43,14 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	protected $errors = array();
 
 	/**
+	 * Modified attribute keys.
+	 *
+	 * @since 0.3.0
+	 * @var array
+	 */
+	protected $modified_attributes_keys = array();
+
+	/**
 	 * Class constructor. Reads schema and sets attributes.
 	 *
 	 * @since 0.2.0
@@ -93,6 +101,7 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	public function __set( $attribute, $value ) {
 		if ( $this->__isset( $attribute ) ) {
 			$this->attributes[ $attribute ] = $value;
+			$this->modified_attributes_keys[] = $attribute;
 		} else {
 			throw new XPressInvalidModelAttributeException( $attribute );
 		}
@@ -204,5 +213,18 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 */
 	public function get_errors() {
 		return $this->errors;
+	}
+
+	/**
+	 * Returns modified attribute keys.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return array Modified attributes.
+	 */
+	public function modified_attributes() {
+		return array_filter( $this->attributes, function( $key ) {
+			return in_array( $key, $this->modified_attributes_keys );
+		}, ARRAY_FILTER_USE_KEY );
 	}
 } // XPress_MVC_Model
