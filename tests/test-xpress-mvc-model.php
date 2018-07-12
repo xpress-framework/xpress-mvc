@@ -235,5 +235,35 @@ class XPress_MVC_Model_Test extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'first_name', $modified_attributes );
 		$this->assertEquals( 'Mary', $modified_attributes['first_name'] );
 	}
+
+	/**
+	 * Remember modified attributes when bulk updating.
+	 */
+	function test_modified_attributes_bulk() {
+		$model = Sample_XPress_Model::new( array(
+			'first_name' => 'John',
+			'age'        => 35,
+		) );
+
+		$model->update( array(
+			'age' => 20,
+		) );
+
+		$modified_attributes = $model->modified_attributes();
+
+		$this->assertArrayHasKey( 'age', $modified_attributes );
+		$this->assertEquals( 20, $modified_attributes['age'] );
+		$this->assertArrayNotHasKey( 'first_name', $modified_attributes );
+
+		$model->update( array(
+			'first_name' => 'Mary',
+		) );
+
+		$modified_attributes = $model->modified_attributes();
+		$this->assertArrayHasKey( 'age', $modified_attributes );
+		$this->assertEquals( 20, $modified_attributes['age'] );
+		$this->assertArrayHasKey( 'first_name', $modified_attributes );
+		$this->assertEquals( 'Mary', $modified_attributes['first_name'] );
+	}
 }
 

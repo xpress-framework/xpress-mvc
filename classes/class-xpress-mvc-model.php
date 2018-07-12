@@ -58,8 +58,11 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 * @return XPress_MVC_Model instance.
 	 */
 	public function __construct( $attributes = array() ) {
-		if ( ! empty( $attributes ) ) {
-			$this->update( $attributes );
+		$invalid_attributes = $this->get_invalid_attributes( $attributes );
+		if ( empty( $invalid_attributes ) ) {
+			$this->attributes = $attributes;
+		} else {
+			throw new XPressInvalidModelAttributeException( join( ', ', $invalid_attributes ) );
 		}
 	}
 
@@ -134,14 +137,11 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 	 * @return boolean
 	 */
 	public function update( $attributes ) {
-		$invalid_attributes = array();
-		foreach ( $attributes as $attribute => $value ) {
-			if ( ! $this->__isset( $attribute ) ) {
-				$invalid_attributes[] = $attribute;
-			}
-		}
+		$invalid_attributes = $this->get_invalid_attributes( $attributes );
 		if ( empty( $invalid_attributes ) ) {
-			$this->attributes = $attributes;
+			foreach ( $attributes as $attribute => $value ) {
+				$this->__set( $attribute, $value );
+			}
 			return true;
 		} else {
 			throw new XPressInvalidModelAttributeException( join( ', ', $invalid_attributes ) );
@@ -226,5 +226,22 @@ abstract class XPress_MVC_Model implements XPress_Model_CRUD {
 		return array_filter( $this->attributes, function( $key ) {
 			return in_array( $key, $this->modified_attributes_keys );
 		}, ARRAY_FILTER_USE_KEY );
+	}
+
+	/**
+	 * Returns modified attribute keys.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @return array Modified attributes.
+	 */
+	protected function get_invalid_attributes( $attributes ) {
+		$invalid_attributes = array();
+		foreach ( $attributes as $attribute => $value ) {
+			if ( ! $this->__isset( $attribute ) ) {
+				$invalid_attributes[] = $attribute;
+			}
+		}
+		return $invalid_attributes;
 	}
 } // XPress_MVC_Model
