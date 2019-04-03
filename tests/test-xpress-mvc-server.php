@@ -111,6 +111,30 @@ class XPress_MVC_Server_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Emulates behavior from translation plugins.
+	 *
+	 * It appends a language slug at the end of the home_url.
+	 *
+	 * @param string $url The regular home url.
+	 * @return string
+	 */
+	public function add_language( $url, $path ) {
+		return str_replace( $path, '/pt-br' . $path, $url );
+	}
+
+	/**
+	 * Test behavior within translation plugins.
+	 * The should not contain the language prefix.
+	 */
+	public function test_get_route_permalink_with_translation_plugin() {
+		add_filter( 'home_url', array( $this, 'add_language' ), 10, 2 );
+
+		$permalink = $this->server->get_route_permalink( 'test-default-value' );
+		$this->assertContains( '/tests/default_value', $permalink );
+		$this->assertNotContains( '/pt-br', $permalink );
+	}
+
+	/**
 	 * Test if 'Controller->method' is converted to a valid callable.
 	 */
 	public function test_xpress_mvc_is_callable() {
