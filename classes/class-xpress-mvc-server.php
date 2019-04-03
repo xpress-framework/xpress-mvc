@@ -794,7 +794,7 @@ class XPress_MVC_Server {
 		}
 
 		// Build the permalink.
-		return home_url( $route );
+		return site_url( $route );
 	}
 
 	/**
