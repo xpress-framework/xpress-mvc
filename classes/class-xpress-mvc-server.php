@@ -274,7 +274,16 @@ class XPress_MVC_Server {
 		// Let WordPress system find the best suitable template for us.
 		$template = get_query_template( $template_name, $templates );
 
-		// Show a notice to the developer if the templates are missing.
+		// Checks for existing absolute paths if no template was found.
+		if ( empty( $template ) ) {
+			foreach ( $templates as $template_path ) {
+				if ( $this->is_absolute_path( $template_path ) && file_exists( $template_path ) ) {
+					$template = $template_path;
+				}
+			}
+		}
+
+		// Show a notice to the developer if the templates are missing.	
 		if ( empty( $template ) ) {
 			$template_list = '[ ' . join( ', ', $templates ) . ' ]';
 			_doing_it_wrong( 'XPress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
@@ -282,6 +291,21 @@ class XPress_MVC_Server {
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Checks if path is absolute.
+	 *
+	 * @since 0.3.0
+	 *
+	 * @param string $path	File path.
+	 * @return bool			
+	 */
+	private function is_absolute_path( $path ) {
+		if ( null === $path || '' === $path ) {
+			throw new Exception( 'Empty path' );
+		}
+	    return DIRECTORY_SEPARATOR === $path[0] || 0 < preg_match( '~\A[A-Z]:(?![^/\\\\])~i', $path );
 	}
 
 	/**
