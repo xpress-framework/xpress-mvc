@@ -277,7 +277,9 @@ class XPress_MVC_Server {
 		// Show a notice to the developer if the templates are missing.
 		if ( empty( $template ) ) {
 			$template_list = '[ ' . join( ', ', $templates ) . ' ]';
-			_doing_it_wrong( 'XPress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
+			if ( defined( 'WP_ENV' ) && WP_ENV === 'development' ) {
+				_doing_it_wrong( 'XPress_MVC_Server->get_template()', __( sprintf( 'Templates %s are missing.', $template_list ) ), '0.1.0' );
+			}
 			return false;
 		}
 
